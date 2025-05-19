@@ -8,6 +8,22 @@ Our project trello board: [BloomTailor Trello Board](https://trello.com/invite/b
 
 ---
 
+🌸 [Figma Prototype](https://www.figma.com/proto/iiyTIycX5S8bAvzg4gu2kp/Bloom-Tailor?node-id=1-3&p=f&t=90rTFu93Ih3wa2DT-1&scaling=contain&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=1%3A3)
+
+[🎥 Watch the Figma Prototype Video](Screen Recording 2025-05-20 020339.mp4)
+
+The BloomTailor Figma prototype features a clean and elegant interface that guides users through a simple and creative bouquet customization process:
+
+Landing Page – A calming, nature-inspired screen with a clear "Start Designing" button.
+
+Flower Selection – A visual gallery where users choose flower types and quantities.
+
+Arrangement Tool – An interactive area for arranging selected flowers into a personalized bouquet.
+
+Wrapping Options – A selection of wrapping styles and color themes to complete the design.
+
+The prototype emphasizes intuitive interaction and visual appeal, reflecting the creativity and beauty of floral arrangement.
+
 This project was developed by:
 
 - **RÂPA Denis-Andrei** - [GitHub Profile](https://github.com/adenis033)
