@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Your Cart</title>
+</head>
+<body>
+
+<style>
+    .cart-container {
+        max-width: 900px;
+        margin: 100px auto;
+        padding: 2rem;
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .cart-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 2rem;
+    }
+
+    .cart-table th,
+    .cart-table td {
+        padding: 1rem;
+        border-bottom: 1px solid #e0e0e0;
+        text-align: left;
+    }
+
+    .cart-table th {
+        background: #fafafa;
+    }
+
+    .cart-summary {
+        text-align: right;
+        margin-top: 2rem;
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+
+    .cart-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 1.5rem;
+    }
+
+    .cart-actions button {
+        background: #e83e8c;
+        color: #ffffff;
+        padding: 0.7rem 1.5rem;
+        border-radius: 6px;
+        border: none;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .cart-actions button:hover {
+        background: #c2185b;
+    }
+</style>
+
+<div class="cart-container">
+    <h2>Your Cart</h2>
+
+    <div th:if="${cart.size() == 0}">
+        <p>Your cart is empty.</p>
+    </div>
+
+    <table class="cart-table" th:if="${cart.size() > 0}">
+        <tr>
+            <th>Item</th>
+            <th>Price</th>
+            <th>Qty</th>
+            <th>Subtotal</th>
+        </tr>
+        <tr th:each="item : ${cart}">
+            <td th:text="${item.name}">Name</td>
+            <td th:text="${item.price}">0.00</td>
+            <td th:text="${item.quantity}">1</td>
+            <td th:text="${item.subtotal}">0.00</td>
+        </tr>
+    </table>
+
+    <div class="cart-summary" th:if="${cart.size() > 0}">
+        Total: $<span th:text="${total}">0.00</span>
+    </div>
+
+    <div class="cart-actions" th:if="${cart.size() > 0}">
+        <form th:action="@{/order/place}" method="post">
+            <button type="submit">Place Order</button>
+        </form>
+        <form th:action="@{/cart/clear}" method="post">
+            <button type="submit">Clear Cart</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

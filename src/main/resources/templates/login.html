@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login</title>
+</head>
+<body>
+
+<style>
+    .login-box {
+        max-width: 400px;
+        margin: 100px auto;
+        padding: 2rem;
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        text-align: center;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .login-box h2 {
+        color: #e83e8c;
+        margin-bottom: 1.5rem;
+    }
+
+    .login-box input {
+        width: 100%;
+        padding: 0.8rem;
+        margin-bottom: 1rem;
+        border-radius: 6px;
+        border: 1px solid #e0e0e0;
+    }
+
+    .login-box button {
+        width: 100%;
+        background: #e83e8c;
+        color: #ffffff;
+        padding: 0.8rem;
+        border-radius: 6px;
+        border: none;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .login-box button:hover {
+        background: #c2185b;
+    }
+</style>
+
+<div class="login-box">
+    <h2>Login</h2>
+    <form th:action="@{/login}" method="post">
+        <input type="text" name="username" placeholder="Username" required /><br />
+        <input type="password" name="password" placeholder="Password" required /><br />
+        <button type="submit">Login</button>
+    </form>
+    <p>Don't have an account? <a th:href="@{/register}">Register here</a></p>
+</div>
+
+</body>
+</html>

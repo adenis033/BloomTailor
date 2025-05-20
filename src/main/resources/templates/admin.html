@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin Panel - BloomTailor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #e83e8c;
+            --primary-dark: #c2185b;
+            --white: #ffffff;
+            --off-white: #fafafa;
+            --light-gray: #e0e0e0;
+            --text: #4a148c;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Montserrat', sans-serif;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+
+        body {
+            margin: 0;
+            font-family: var(--font-body);
+            background: var(--off-white);
+            color: var(--text);
+        }
+
+        .admin-panel {
+            max-width: 1000px;
+            margin: 3rem auto;
+            padding: 2rem;
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        h2 {
+            font-family: var(--font-heading);
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+        }
+
+        form {
+            margin-bottom: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        textarea {
+            padding: 0.7rem;
+            border: 1px solid var(--light-gray);
+            border-radius: 6px;
+            font-family: var(--font-body);
+            flex: 1 1 200px;
+        }
+
+        button.btn {
+            background: var(--primary);
+            color: var(--white);
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: var(--font-body);
+        }
+
+        button.btn:hover {
+            background: var(--primary-dark);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        table th, table td {
+            border: 1px solid var(--light-gray);
+            padding: 0.8rem;
+            text-align: left;
+        }
+
+        table th {
+            background-color: var(--off-white);
+            font-weight: 600;
+        }
+
+        .section-divider {
+            margin: 3rem 0;
+            border-top: 2px solid var(--light-gray);
+        }
+
+        label {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+<div class="admin-panel">
+    <h2>🌸 Manage Flowers</h2>
+    <form th:action="@{/admin/flowers/add}" method="post">
+        <input type="text" name="name" placeholder="Name" required>
+        <input type="text" name="imageName" placeholder="Image (e.g., rose.jpg)" required>
+        <input type="text" name="color" placeholder="Color">
+        <input type="number" name="pricePerStem" step="0.01" placeholder="Price" required>
+        <button class="btn" type="submit">Add Flower</button>
+    </form>
+
+    <table>
+        <tr><th>Name</th><th>Color</th><th>Price</th><th>Actions</th></tr>
+        <tr th:each="f : ${flowers}">
+            <td th:text="${f.name}"></td>
+            <td th:text="${f.color}"></td>
+            <td th:text="${f.pricePerStem}"></td>
+            <td>
+                <form th:action="@{/admin/flowers/delete/{id}(id=${f.id})}" method="post">
+                    <button class="btn" type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+
+    <div class="section-divider"></div>
+
+    <h2>💐 Manage Bouquets</h2>
+    <form th:action="@{/admin/bouquets/add}" method="post">
+        <input type="text" name="name" placeholder="Name" required>
+        <input type="text" name="imageName" placeholder="Image (e.g., bouquet.jpg)" required>
+        <input type="text" name="description" placeholder="Description" required>
+        <input type="number" name="price" step="0.01" placeholder="Price" required>
+        <label><input type="checkbox" name="featured"> Featured</label>
+        <button class="btn" type="submit">Add Bouquet</button>
+    </form>
+
+    <table>
+        <tr><th>Name</th><th>Price</th><th>Featured</th><th>Actions</th></tr>
+        <tr th:each="b : ${bouquets}">
+            <td th:text="${b.name}"></td>
+            <td th:text="${b.price}"></td>
+            <td th:text="${b.featured}"></td>
+            <td>
+                <form th:action="@{/admin/bouquets/delete/{id}(id=${b.id})}" method="post">
+                    <button class="btn" type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>

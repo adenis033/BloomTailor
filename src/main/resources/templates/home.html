@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BloomTailor - Custom Flower Bouquets</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar">
+    <div class="nav-content">
+        <div class="nav-logo">
+            <h1>BloomTailor</h1>
+        </div>
+        <div class="nav-links">
+            <a href="#home" class="nav-link">Home</a>
+            <a href="#flowers" class="nav-link">Flowers</a>
+            <a href="#bouquets" class="nav-link">Bouquets</a>
+            <a href="#stores" class="nav-link">Stores</a>
+            <a href="#contact" class="nav-link">Contact</a>
+            <div sec:authorize="hasRole('ADMIN')">
+                <a th:href="@{/admin}" class="btn btn-admin">Admin Panel</a>
+            </div>
+        </div>
+            <div class="nav-actions">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search bouquets...">
+                </div>
+                <div sec:authorize="!isAuthenticated()">
+                    <a th:href="@{/login}" class="btn-login"><i class="fas fa-user"></i> Login</a>
+                </div>
+                <div sec:authorize="isAuthenticated()" style="display: flex; gap: 10px; align-items: center;">
+                    <a th:href="@{/cart}" class="btn-login"><i class="fas fa-shopping-cart"></i> Cart</a>
+
+                    <form th:action="@{/logout}" method="post" style="display: inline;">
+                        <button type="submit" class="btn-login" style="background: none; border: none; cursor: pointer;">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section id="home" class="hero">
+    <div class="hero-content">
+        <h2>Custom Flower Bouquets</h2>
+        <p>Handcrafted with love in Bucharest</p>
+        <a href="#bouquets" class="btn-primary">Explore Collections</a>
+    </div>
+</section>
+
+<!-- Flower Categories -->
+<section id="flowers" class="section">
+    <div class="section-header">
+        <h2 class="section-title">Our Flowers</h2>
+        <p class="section-subtitle">Premium quality stems for your perfect bouquet</p>
+    </div>
+    <div class="flower-grid">
+        <div class="flower-card" th:each="flower : ${flowers}">
+            <div class="flower-img">
+                <img th:src="@{'/images/flowers/' + ${flower.imageName}}" th:alt="${flower.name}">
+            </div>
+            <h3 th:text="${flower.name}"></h3>
+            <p class="price" th:text="'$' + ${#numbers.formatDecimal(flower.pricePerStem, 1, 2)} + '/stem'"></p>
+
+            <form th:action="@{/cart/add}" method="post">
+                <input type="hidden" th:name="name" th:value="${flower.name}">
+                <input type="hidden" th:name="price" th:value="${flower.pricePerStem}">
+                <input type="hidden" name="quantity" value="1">
+                <button type="submit" class="btn btn-cart">Add to Cart</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Bouquet Showcase -->
+<section id="bouquets" class="section bg-light">
+    <div class="section-header">
+        <h2 class="section-title">Signature Bouquets</h2>
+        <p class="section-subtitle">Our most popular arrangements</p>
+    </div>
+    <div class="bouquet-grid">
+        <div class="bouquet-card" th:each="bouquet : ${bouquets}">
+            <div class="bouquet-img">
+                <img th:src="@{'/images/bouquets/' + ${bouquet.imageName}}" th:alt="${bouquet.name}">
+            </div>
+            <div class="bouquet-info">
+                <h3 th:text="${bouquet.name}"></h3>
+                <p class="price" th:text="'$' + ${#numbers.formatDecimal(bouquet.price, 1, 2)}"></p>
+
+                <form th:action="@{/cart/add}" method="post">
+                    <input type="hidden" th:name="name" th:value="${bouquet.name}">
+                    <input type="hidden" th:name="price" th:value="${bouquet.price}">
+                    <input type="hidden" name="quantity" value="1">
+                    <button type="submit" class="btn btn-cart">Add to Cart</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Customize Your Bouquet -->
+<section id="customize" class="section">
+    <div class="section-header">
+        <h2 class="section-title">Create Your Own Bouquet</h2>
+        <p class="section-subtitle">Choose your favorite flowers</p>
+    </div>
+    <div class="container customize-box">
+        <div class="custom-item" th:each="flower : ${flowers}">
+            <img class="custom-flower" th:src="@{'/images/flowers/' + ${flower.imageName}}" th:alt="${flower.name}">
+            <h4 th:text="${flower.name}"></h4>
+            <input type="number" class="flower-count" min="0" value="0" th:data-price="${flower.pricePerStem}">
+        </div>
+    </div>
+    <div class="custom-summary">
+        <h3>Total Price: <span id="custom-price">$0.00</span></h3>
+        <button class="btn btn-cart">Add Custom Bouquet to Cart</button>
+    </div>
+</section>
+
+<!-- Stores Section -->
+<section id="stores" class="section">
+    <div class="section-header">
+        <h2 class="section-title">Our Boutiques</h2>
+        <p class="section-subtitle">Visit us in Bucharest</p>
+    </div>
+    <div class="store-grid">
+        <div class="store-card" th:each="store : ${stores}">
+            <div class="store-icon">
+                <i class="fas fa-store"></i>
+            </div>
+            <h3 th:text="${store.name}"></h3>
+            <p><i class="fas fa-map-marker-alt"></i> <span th:text="${store.address}"></span></p>
+            <p><i class="fas fa-phone"></i> <span th:text="${store.phone}"></span></p>
+            <p><i class="fas fa-clock"></i> <span th:text="${store.hours}"></span></p>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="section bg-light">
+    <div class="section-header">
+        <h2 class="section-title">Contact Us</h2>
+        <p class="section-subtitle">We'd love to hear from you</p>
+    </div>
+    <div class="contact-container">
+        <div class="contact-info">
+            <h3>Get in Touch</h3>
+            <p><i class="fas fa-envelope"></i> hello@bloomtailor.com</p>
+            <p><i class="fas fa-phone"></i> +40 123 456 789</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-pinterest"></i></a>
+            </div>
+        </div>
+        <form class="contact-form">
+            <div class="form-group">
+                <input type="text" placeholder="Your Name" required>
+            </div>
+            <div class="form-group">
+                <input type="email" placeholder="Your Email" required>
+            </div>
+            <div class="form-group">
+                <textarea placeholder="Your Message" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="btn-primary">Send Message</button>
+        </form>
+    </div>
+</section>
+
+<!-- Logout Button -->
+<div style="text-align: center; margin: 2rem 0;" sec:authorize="isAuthenticated()">
+    <form th:action="@{/logout}" method="post">
+        <button type="submit" class="btn-primary" style="padding: 10px 20px;">Logout</button>
+    </form>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-logo">
+            <img th:src="@{/images/logo.png}" alt="BloomTailor">
+            <p>Custom flower bouquets crafted with passion</p>
+        </div>
+        <div class="footer-links">
+            <h4>Quick Links</h4>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#flowers">Flowers</a></li>
+                <li><a href="#bouquets">Bouquets</a></li>
+                <li><a href="#stores">Stores</a></li>
+            </ul>
+        </div>
+        <div class="footer-contact">
+            <h4>Contact</h4>
+            <p><i class="fas fa-map-marker-alt"></i> Strada Florilor 15, Bucharest</p>
+            <p><i class="fas fa-phone"></i> +40 123 456 789</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2025 BloomTailor. All rights reserved.</p>
+    </div>
+</footer>
+
+<script th:src="@{/js/scripts.js}"></script>
+<script>
+    window.addEventListener('load', () => {
+        document.addEventListener('input', function (e) {
+            if (e.target.classList.contains('flower-count')) {
+                let total = 0;
+                document.querySelectorAll('.flower-count').forEach(input => {
+                    const count = parseInt(input.value) || 0;
+                    const price = parseFloat(input.dataset.price) || 0;
+                    total += count * price;
+                });
+                document.getElementById('custom-price').textContent = '$' + total.toFixed(2);
+            }
+        });
+    });
+</script>
+</body>
+</html>

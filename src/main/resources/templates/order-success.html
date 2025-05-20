@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Order Success</title>
+</head>
+<body>
+
+<style>
+    .success-message {
+        max-width: 600px;
+        margin: 120px auto;
+        text-align: center;
+        padding: 2rem;
+        background: #fce4ec;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .success-message h1 {
+        color: #c2185b;
+        font-size: 2.5rem;
+    }
+
+    .success-message p {
+        color: #7b5fb5;
+        font-size: 1.2rem;
+    }
+
+    .success-message a {
+        display: inline-block;
+        margin-top: 1.5rem;
+        text-decoration: none;
+        color: #e83e8c;
+        font-weight: bold;
+    }
+
+    .success-message a:hover {
+        color: #c2185b;
+    }
+</style>
+
+<div class="success-message">
+    <h1>Thank You for Your Order!</h1>
+    <p>Your bouquet will be prepared with care.</p>
+    <p>Total Paid: $<span th:text="${orderTotal}"></span></p>
+    <a th:href="@{/}">Return to Homepage</a>
+</div>
+
+</body>
+</html>
